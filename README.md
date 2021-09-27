@@ -1,2 +1,2 @@
 # koa-controller
-Use @koa/router and koa-router routing for controller extension 🦞
+Controller extension for @koa/router and koa-router middleware 🦞
