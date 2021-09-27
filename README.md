@@ -1,2 +1,2 @@
 # koa-controller
-Controller plugin by @koa/router or koa-router middleware 🦞
+Controller extension by @koa/router or koa-router middleware 🦞
