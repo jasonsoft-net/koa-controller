@@ -1,0 +1,52 @@
+{
+  "name": "@jasonsoft/koa-controller",
+  "version": "2.0.0",
+  "description": "Controller extension by @koa/router or koa-router middleware",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "rimraf -rf dist && tsc -p tsconfig.json",
+    "format": "prettier --write 'src/**/*.{js,ts,json}' --ignore-path ./.eslintignore",
+    "lint": "eslint 'src/**/*.ts' --fix",
+    "prepublish:npm": "npm run build",
+    "publish:npm": "npm publish --access public",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jasonsoft/koa-controller.git"
+  },
+  "keywords": [
+    "@jasonsoft/koa-controller",
+    "jasonsoft",
+    "koa-controller",
+    "router",
+    "koa-router",
+    "@koa/router",
+    "koa",
+    "controller",
+    "mvc"
+  ],
+  "author": "Jason Song (成长的小猪)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jasonsoft/koa-controller/issues"
+  },
+  "homepage": "https://github.com/jasonsoft/koa-controller#readme",
+  "devDependencies": {
+    "@types/glob": "^7.1.4",
+    "@types/node": "^16.10.1",
+    "@typescript-eslint/eslint-plugin": "^4.31.2",
+    "@typescript-eslint/parser": "^4.31.2",
+    "eslint": "7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "prettier": "^2.4.1",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.4.3"
+  },
+  "peerDependencies": {
+    "glob": "^7.2.0",
+    "reflect-metadata": "^0.1.13"
+  }
+}
