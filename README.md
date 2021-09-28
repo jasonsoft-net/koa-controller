@@ -35,15 +35,19 @@ import Router from '@koa/router';
  */
 import { ControllerProvider } from '@jasonsoft/koa-controller';
 
+/** Instantiate the Koa object  */
 const app = new Koa();
+
+/** router middleware */
 const router = new Router();
-/**
- * Inject the controller directory
- */
+
+/** Inject the controller directory */
 ControllerProvider.initControllers({
   router,
   /** The default directory is './src/controllers' */
   dir: './app/controllers',
+  /** Whether to enable the body parser, the default setting is false, not enabled */
+  bodyParser: true,
 });
 app.use(router.routes()).use(router.allowedMethods());
 
@@ -61,46 +65,6 @@ app.listen(port, () => {
 ```javascript
 /**
  * Example: https://github.com/jasonsoft-net/jasonsoft-koa-server
- * FilePath: /jasonsoft-koa-server/app/controllers/app.controller.js
- * Import Controller, Get, Post, Put, Delete, Patch, Options, Head, All, etc. decorators
- */
-import {
-  Controller,
-  Get,
-  Post,
-  Put,
-  Delete,
-  Patch,
-  Options,
-  Head,
-  All,
-} from '@jasonsoft/koa-controller';
-
-/** Inject the controller decorator */
-@Controller()
-export default class AppController {
-  constructor() {
-    this.message = {
-      title: 'Welcome to use jasonsoft-koa-server template',
-      author: 'Jason.Song',
-      github: 'https://github.com/jasonsoft-net',
-      organization: 'https://github.com/jasonsoft',
-    };
-  }
-
-  /**
-   * GET http://localhost:3000/
-   */
-  @Get()
-  async index() {
-    return this.message;
-  }
-}
-```
-
-```javascript
-/**
- * Example: https://github.com/jasonsoft-net/jasonsoft-koa-server
  * FilePath: /jasonsoft-koa-server/app/controllers/user/users.controller.js
  * Import Controller, Get, Post, Put, Delete, Patch, Options, Head, All, etc. decorators
  */
@@ -108,12 +72,13 @@ import {
   Controller,
   Get,
   Post,
-  Put,
-  Delete,
-  Patch,
-  Options,
-  Head,
-  All,
+  // Post,
+  // Put,
+  // Delete,
+  // Patch,
+  // Options,
+  // Head,
+  // All,
 } from '@jasonsoft/koa-controller';
 
 @Controller('users')
@@ -146,6 +111,14 @@ export default class UsersController {
   async getUserById(ctx) {
     const { id } = ctx.params;
     return this.users.find((user) => user.id === +id);
+  }
+
+  /**
+   * POST http://localhost:3000/users
+   */
+  @Post()
+  async createUser(ctx) {
+    return { success: true, data: ctx.request.body };
   }
 }
 ```
