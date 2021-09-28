@@ -12,4 +12,9 @@ export interface ControllerOptions {
    * 默认路由控制器路径 './src/controllers'
    */
   dir: string;
+  /**
+   * 是否启用Body解析器，默认设置为false，不启用
+   * Whether to enable the body parser, the default setting is false, not enabled
+   */
+  bodyParser: boolean;
 }

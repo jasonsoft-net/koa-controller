@@ -1,6 +1,7 @@
 import { METHOD_METADATA, PATH_METADATA } from './constants';
 import * as glob from 'glob';
 import path from 'path';
+import parse from 'co-body';
 import {
   addLeadingSlash,
   isFunction,
@@ -75,7 +76,7 @@ export class ControllerProvider {
                 const routerPath =
                   cp !== '/' ? `${cp}${mp !== '/' ? mp : ''}` : mp;
                 this.bindPathToRouter(
-                  options.router,
+                  options,
                   requestMethod,
                   routerPath,
                   controller,
@@ -92,6 +93,7 @@ export class ControllerProvider {
   /**
    * 将控制器路径绑定至路由
    * Added by Jason.Song (成长的小猪) on 2021/09/20 11:49:31
+   * @param options
    * @param router
    * @param requestMethod
    * @param routerPath
@@ -99,7 +101,7 @@ export class ControllerProvider {
    * @param methodName
    */
   private static bindPathToRouter(
-    router: any,
+    options: ControllerOptions,
     requestMethod: RequestMethod,
     routerPath: string,
     controller: any,
@@ -108,8 +110,25 @@ export class ControllerProvider {
     console.log(
       `\x1B[33m[@jasonsoft/koa-controller]\x1B[39m\x1B[32m RouterMapped => ${requestMethod.toUpperCase()} ${routerPath} \x1B[39m`,
     );
-    router[requestMethod](routerPath, async (ctx: any, next: any) => {
-      const ctl = new controller(ctx);
+    options.router[requestMethod](routerPath, async (ctx: any, next: any) => {
+      if (
+        options.bodyParser &&
+        (requestMethod === RequestMethod.POST ||
+          requestMethod === RequestMethod.PUT ||
+          requestMethod === RequestMethod.PATCH)
+      ) {
+        if (ctx.is('application/json')) {
+          ctx.request.body = await parse.json(ctx.req);
+        } else if (ctx.is('application/x-www-form-urlencoded')) {
+          ctx.request.body = await parse.form(ctx.req);
+        } else if (ctx.is('text/plain')) {
+          ctx.request.body = await parse.text(ctx.req);
+        } else {
+          ctx.request.body = await parse(ctx.req);
+        }
+      }
+
+      const ctl = new controller(ctx, next);
       ctx.body = await ctl[methodName](ctx);
       return await next();
     });
